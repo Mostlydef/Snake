@@ -26,3 +26,11 @@ Snake_images = [pygame.transform.scale(pygame.image.load("images\\Snake_{}.png".
 
 pygame.transform.smoothscale(surface, (20, 20))
 white = pygame.Color(255, 255, 255)
+
+GAME_OVER_TYPES = ['quit', 'leave', 'restart']
+RS = {
+    (0, 1): 2,
+    (0, -1): 0,
+    (-1, 0): 1,
+    (1, 0): 3
+}
