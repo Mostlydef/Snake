@@ -15,7 +15,7 @@ class Command(ABC):
 class StartTheGameCommand(Command):
     def execute(self) -> None:
         game = snake.Snake()
-        gv.load_bg_music('game_bg_music.mp3')
+        gv.load_bg_music('sounds\\game_bg_music.mp3')
         if not gv.music_volume:
             pygame.mixer.music.pause()
         game.run()

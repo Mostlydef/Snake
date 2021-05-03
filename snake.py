@@ -39,6 +39,9 @@ class Snake:
                 if str(e) == gv.GAME_OVER_TYPES[0]:
                     sys.exit()
                 elif str(e) == gv.GAME_OVER_TYPES[1]:
+                    gv.load_bg_music('sounds\\bg_music.mp3')
+                    if not gv.music_volume:
+                        pygame.mixer.music.pause()
                     break
                 elif str(e) == gv.GAME_OVER_TYPES[2]:
                     self.setup()
@@ -46,6 +49,9 @@ class Snake:
                 else:
                     print('Что-то ещё.')
                     print(str(e))
+                    gv.load_bg_music('sounds\\bg_music.mp3')
+                    if not gv.music_volume:
+                        pygame.mixer.music.pause()
                     break
 
     def draw(self):
@@ -205,7 +211,38 @@ class Snake:
             pygame.display.update()
 
     def game_over(self):
-        pass
+        if gv.volume:
+            gv.game_over_music.play()
+        gv.pick.stop()
+
+        def leave_to_menu():
+            gv.game_over_music.stop()
+            raise Exception(gv.GAME_OVER_TYPES[1])
+
+        def restart():
+            gv.game_over_music.stop()
+            raise Exception(gv.GAME_OVER_TYPES[2])
+
+        menu = gv.pygame_menu.Menu(gv.WINSIZE + 60, gv.WINSIZE + 20, '', theme=gv.zxc, )
+        menu.add_label('Победа\n' + f'Счёт : {self.score}\n' if self.score == int((gv.WINSIZE / gv.SIZE) ** 2) - 3
+                       else 'Игра окончена\n' + f'Счёт : {self.score}\n')
+        menu.add_button('Начать заново', restart)
+
+        menu.add_button('Выйти в главное меню', leave_to_menu)
+
+        while True:
+            gv.surface.blit(gv.bg_img, (0, 0))
+
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    gv.game_over_music.stop()
+                    pygame.quit()
+                    raise Exception(gv.GAME_OVER_TYPES[0])
+            if menu.is_enabled():
+                menu.update(events)
+                menu.draw(gv.surface)
+            pygame.display.update()
 
     def determine_second_segment_direction(self):
         if self.snake_body[0].x > self.snake_body[2].x and self.snake_body[0].y > self.snake_body[2].y:
