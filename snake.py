@@ -173,7 +173,36 @@ class Snake:
             self.game_over()
 
     def pause(self):
-        pass
+        z = []
+
+        def leave_to_menu():
+            raise Exception(gv.GAME_OVER_TYPES[1])
+
+        def pause_break():
+            k = pygame.event.Event(pygame.KEYDOWN, key=27)
+            z.append(k)
+
+        menu = gv.pygame_menu.Menu(gv.WINSIZE + 60, gv.WINSIZE + 20, '', theme=gv.zxc, )
+        menu.add_button('Возобновить игру', pause_break)
+
+        menu.add_button('Выйти в главное меню', leave_to_menu)
+
+        while True:
+            gv.surface.blit(gv.bg_img, (0, 0))
+
+            events = pygame.event.get()
+            for event in events + z:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    raise Exception(gv.GAME_OVER_TYPES[0])
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
+
+            if menu.is_enabled():
+                menu.update(events)
+                menu.draw(gv.surface)
+            pygame.display.update()
 
     def game_over(self):
         pass
@@ -216,8 +245,3 @@ class Snake:
             self.snake_body[-1].r = 2
         if self.snake_body[-1].x == self.snake_body[-2].x and self.snake_body[-1].y > self.snake_body[-2].y:
             self.snake_body[-1].r = 0
-
-
-if __name__ == '__main__':
-    snake = Snake()
-    snake.run()
