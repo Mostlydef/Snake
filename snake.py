@@ -49,7 +49,24 @@ class Snake:
                     break
 
     def draw(self):
-        pass
+        gv.surface.blit(gv.background_img, (0, 0))
+        for pos in self.snake_body[1:-1]:
+            gv.surface.blit(pygame.transform.rotate(gv.Snake_images[pos.t], 90 * pos.r), (pos.x, pos.y))
+
+        gv.surface.blit(pygame.transform.rotate(gv.Snake_images[0], 90 * self.snake_pos.r),
+                        (self.snake_pos.x, self.snake_pos.y))
+
+        gv.surface.blit(pygame.transform.rotate(gv.Snake_images[3], 90 * self.snake_body[-1].r),
+                        (self.snake_body[-1].x, self.snake_body[-1].y))
+
+        gv.surface.blit(gv.apple, (self.food_pos[0], self.food_pos[1]))
+
+        score_surface = pygame.font.SysFont('consolas', 22).render('Счёт : ' + str(self.score), True, gv.white)
+        score_rect = score_surface.get_rect()
+        score_rect.midtop = (10 + gv.WINSIZE / 10, 15)
+        gv.surface.blit(score_surface, score_rect)
+
+        pygame.display.update()
 
     def move(self):
         if len(self.kq):
@@ -123,8 +140,11 @@ class Snake:
         self.check_events()
         self.move()
 
+        self.determine_second_segment_direction()
         self.check_eating_apple()
+
         self.spawn_food()
+        self.determine_tail_direction()
         self.check_collision()
 
     def check_collision(self):
@@ -134,8 +154,8 @@ class Snake:
         if self.snake_pos.x == self.food_pos[0] and self.snake_pos.y == self.food_pos[1]:
             self.score += 1
             self.cap += 1
-            self.fps = min(24, self.fps + (self.cap >= 8))
-            self.cap %= 8
+            self.fps = min(22, self.fps + (self.cap >= 10))
+            self.cap %= 10
             self.is_food_spawn = False
             if gv.volume:
                 gv.pick.play()
@@ -149,6 +169,45 @@ class Snake:
 
     def game_over(self):
         pass
+
+    def determine_second_segment_direction(self):
+        if self.snake_body[0].x > self.snake_body[2].x and self.snake_body[0].y > self.snake_body[2].y:
+            if self.snake_body[0].x == self.snake_body[1].x and self.snake_body[0].y > self.snake_body[1].y:
+                self.snake_body[1].r = 0
+            else:
+                self.snake_body[1].r = 2
+            self.snake_body[1].t = 2
+
+        if self.snake_body[0].x > self.snake_body[2].x and self.snake_body[0].y < self.snake_body[2].y:
+            if self.snake_body[0].x == self.snake_body[1].x and self.snake_body[0].y < self.snake_body[1].y:
+                self.snake_body[1].r = 3
+            else:
+                self.snake_body[1].r = 1
+            self.snake_body[1].t = 2
+
+        if self.snake_body[0].x < self.snake_body[2].x and self.snake_body[0].y < self.snake_body[2].y:
+            if self.snake_body[0].x == self.snake_body[1].x and self.snake_body[0].y < self.snake_body[1].y:
+                self.snake_body[1].r = 2
+            else:
+                self.snake_body[1].r = 0
+            self.snake_body[1].t = 2
+
+        if self.snake_body[0].x < self.snake_body[2].x and self.snake_body[0].y > self.snake_body[2].y:
+            if self.snake_body[0].x == self.snake_body[1].x and self.snake_body[0].y > self.snake_body[1].y:
+                self.snake_body[1].r = 1
+            else:
+                self.snake_body[1].r = 3
+            self.snake_body[1].t = 2
+
+    def determine_tail_direction(self):
+        if self.snake_body[-1].x < self.snake_body[-2].x and self.snake_body[-1].y == self.snake_body[-2].y:
+            self.snake_body[-1].r = 3
+        if self.snake_body[-1].x > self.snake_body[-2].x and self.snake_body[-1].y == self.snake_body[-2].y:
+            self.snake_body[-1].r = 1
+        if self.snake_body[-1].x == self.snake_body[-2].x and self.snake_body[-1].y < self.snake_body[-2].y:
+            self.snake_body[-1].r = 2
+        if self.snake_body[-1].x == self.snake_body[-2].x and self.snake_body[-1].y > self.snake_body[-2].y:
+            self.snake_body[-1].r = 0
 
 
 if __name__ == '__main__':
