@@ -148,7 +148,15 @@ class Snake:
         self.check_collision()
 
     def check_collision(self):
-        pass
+        if self.snake_pos.x < 10 or self.snake_pos.x > 10 + gv.WINSIZE - gv.SIZE:
+            self.game_over()
+
+        if self.snake_pos.y < 50 or self.snake_pos.y > 50 + gv.WINSIZE - gv.SIZE:
+            self.game_over()
+
+        for segment in self.snake_body[1:]:
+            if self.snake_pos.x == segment.x and self.snake_pos.y == segment.y:
+                self.game_over()
 
     def check_eating_apple(self):
         if self.snake_pos.x == self.food_pos[0] and self.snake_pos.y == self.food_pos[1]:
