@@ -67,9 +67,5 @@ class Invoker:
         self._change_music_value.value = value
         self._change_music_value.execute()
 
-    def change_resolution(self, string, value):
-        self._change_resolution.value = value
-        self._change_resolution.execute()
-
 
 invoker = Invoker(StartTheGameCommand(), HelpCommand(), ChangeVolumeCommand(), ChangeMusicVolumeCommand())
