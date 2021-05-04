@@ -24,11 +24,11 @@ pygame.display.set_caption('Змейка')
 
 surface = pygame.display.set_mode((WINSIZE + 20, WINSIZE + 60))
 bg_img = pygame.transform.scale(pygame.image.load('images\\bg.png').convert(), (WINSIZE + 20, WINSIZE + 60))
-background_img = pygame.transform.scale(pygame.image.load('images\\background.png').convert(), (WINSIZE + 20, WINSIZE + 60))
+background_img = pygame.transform.scale(pygame.image.load('images\\background.png').convert(),
+                                        (WINSIZE + 20, WINSIZE + 60))
 apple = pygame.transform.scale(pygame.image.load('images\\Apple.png'), (SIZE, SIZE))
 Snake_images = [pygame.transform.scale(pygame.image.load("images\\Snake_{}.png".format(i)),
                                        (SIZE, SIZE)) for i in range(4)]
-
 
 pygame.transform.smoothscale(surface, (20, 20))
 
@@ -48,4 +48,3 @@ zxc.widget_font_color = (255, 255, 255)
 zxc.selection_color = (255, 255, 255)
 zxc.set_background_color_opacity(0.0)
 zxc.title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_NONE
-
