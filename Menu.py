@@ -5,6 +5,7 @@ from Command import invoker
 
 
 class Menu:
+    """Главное меню."""
     def __init__(self):
         self.menu = pygame_menu.Menu(gv.WINSIZE + 60, gv.WINSIZE + 20, '', theme=gv.zxc, )
         self.menu.add_button('Играть', invoker.start_the_game)

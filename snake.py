@@ -6,6 +6,7 @@ import global_variables as gv
 
 
 class Snake:
+    """Игра 'Змейка'."""
     def __init__(self):
         self.setup()
         self.clock = pygame.time.Clock()
@@ -29,6 +30,7 @@ class Snake:
         self.kq = []
 
     def run(self):
+        """Запуск игры."""
         self.draw()
         while True:
             try:
