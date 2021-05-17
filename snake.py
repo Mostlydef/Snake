@@ -76,7 +76,7 @@ class Snake:
 
         pygame.display.update()
 
-    def move(self):
+    def change_direction(self):
         if len(self.kq):
             if self.kq[0] == pygame.K_UP:
                 self.t = (0, -1)
@@ -107,6 +107,7 @@ class Snake:
         self.snake_pos.t = 1
         self.snake_pos.r = gv.RS[self.d]
 
+    def move(self):
         self.snake_pos.x += gv.SIZE * self.d[0]
         self.snake_pos.y += gv.SIZE * self.d[1]
         self.snake_body.insert(0, Segment(self.snake_pos.x, self.snake_pos.y, r=self.snake_pos.r, t=self.snake_pos.t))
@@ -146,6 +147,7 @@ class Snake:
 
     def pass_frame(self):
         self.check_events()
+        self.change_direction()
         self.move()
 
         self.determine_second_segment_direction()
